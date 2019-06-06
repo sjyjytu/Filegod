@@ -27,10 +27,10 @@ class Books extends React.Component {
     }
 
     handleDownload(file_id) {
-        console.log(123)
+        //console.log(123)
         window.open(`http://47.103.0.246:12580/files/download?file_id=${file_id}`, "_blank")
-        agent.Files.download(file_id);
-        console.log(file_id)
+        //agent.Files.download(file_id);
+        //console.log(file_id)
     }
 
     componentWillMount() {
@@ -43,13 +43,13 @@ class Books extends React.Component {
         return (
             <React.Fragment>
                 <Link to="AddFile">
-                    <Button>Add File</Button>
+                    <Button>添加文件</Button>
                 </Link>
                 <Link to="AddLink">
-                    <Button>Add Link</Button>
+                    <Button>添加链接</Button>
                 </Link>
 
-                {this.props.contents.map(content =>
+                {this.props.contents.reverse().map(content =>
                     <ExpansionPanel>
                         <ExpansionPanelSummary
                             expandIcon={<ExpandMoreIcon />}
@@ -58,11 +58,13 @@ class Books extends React.Component {
                             {content.author}
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
-                            {content.file_id !== "" ?
-                                (<Button onClick={() => this.handleDownload(content.file_id)}>download</Button>) :
-                                (<a href={content.link}>{content.link}</a>)}
-                            <br />
+                            <div>
                             {content.description}
+                            <br/>
+                                {content.file_id !== "" ?
+                                    (<Button onClick={() => this.handleDownload(content.file_id)}>下载文件</Button>) :
+                                    (<a href={content.link}>{content.link}</a>)}
+                            </div>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
                 )}

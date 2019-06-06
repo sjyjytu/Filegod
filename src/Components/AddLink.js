@@ -37,7 +37,7 @@ const styles = theme => ({
         marginTop: theme.spacing.unit,
         marginLeft: '2%',
     },
-    save: {
+    saveClass: {
         marginTop: theme.spacing.unit,
         marginBottom: theme.spacing.unit * 3,
         marginLeft: '2%',
@@ -65,6 +65,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     onSave: () =>
         dispatch({ type: 'OK' }),
+    onRedirect: () => dispatch({type: 'REDIRECTED'})
 })
 
 
@@ -79,7 +80,6 @@ class AddLink extends React.Component {
         }
 
         this.updateState = this.updateState.bind(this);
-        this.handleImageChange = this.handleImageChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -92,9 +92,8 @@ class AddLink extends React.Component {
     async handleSubmit(event) {
         event.preventDefault();
         const { title, author, link, description } = this.state;
-        
-            await agent.Contents.create(title, author, link, description)
-            this.props.onSave();
+        await agent.Links.upload(title, author, link, description);
+        this.props.onSave();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -113,7 +112,7 @@ class AddLink extends React.Component {
                         <div className={classes.info}>
                             <TextField
                                 type="text"
-                                label='Book Title'
+                                label='Title'
                                 className={classes.title}
                                 value={this.state.title}
                                 onChange={this.updateState('title')}
@@ -138,7 +137,7 @@ class AddLink extends React.Component {
                             
                             <Button
                                 variant="contained"
-                                className={classes.save}
+                                className={classes.saveClass}
                                 type="submit"
                             >
                                 OK

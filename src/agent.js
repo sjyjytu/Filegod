@@ -18,7 +18,7 @@ const Files = {
 
 const Links = {
     upload: (title, author, link, description) =>
-        requests.post(API_ROOT + '/files/upload')
+        requests.post(API_ROOT + '/links/upload')
             .send({ title, author, link, description })
             .then(res => res.body),
 }

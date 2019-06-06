@@ -66,6 +66,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     onSave: () =>
         dispatch({ type: 'OK' }),
+    onRedirect: () => dispatch({type: 'REDIRECTED'})
 })
 
 
@@ -77,6 +78,7 @@ class AddFile extends React.Component {
             author: '',
             file: '',
             description: '',
+            uploading: false,
         }
 
         this.updateState = this.updateState.bind(this);
@@ -99,9 +101,10 @@ class AddFile extends React.Component {
     async handleSubmit(event) {
         event.preventDefault();
         const { title, author, file, description } = this.state;
-        
-            await agent.Files.upload(title, author, file, description)
-            this.props.onSave();
+        this.setState({uploading:true});
+        await agent.Files.upload(title, author, file, description);
+        this.setState({uploading:false});
+        this.props.onSave();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -120,7 +123,7 @@ class AddFile extends React.Component {
                         <div className={classes.info}>
                             <TextField
                                 type="text"
-                                label='Book Title'
+                                label='Title'
                                 className={classes.title}
                                 value={this.state.title}
                                 onChange={this.updateState('title')}
@@ -139,7 +142,7 @@ class AddFile extends React.Component {
                                 className={classes.imageButton}
                                 onClick={() => this.imagePicker.click()}
                             >
-                                Pick File
+                                选择文件
                             </Button>
                             <input
                                 type="file"
@@ -153,15 +156,16 @@ class AddFile extends React.Component {
                                 variant="contained"
                                 className={classes.save}
                                 type="submit"
+                                disabled={this.state.uploading}
                             >
-                                OK
+                                {this.state.uploading?'上传中...':'上传'}
                             </Button>
                             <Link to = "/">
                             <Button
                                 variant="contained"
                                 className={classes.cancel}
                             >
-                                Cancel
+                                取消
                             </Button>
                             </Link>
                         </div>

@@ -15,6 +15,11 @@ const contents = (state = defaultState, action) => {
                 ...state,
                 redirectTo: '/'
             }
+        case 'REDIRECTED':
+            return {
+                ...state,
+                redirectTo: null
+            }
         default:
             return state
     }
